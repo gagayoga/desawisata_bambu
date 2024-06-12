@@ -8,6 +8,7 @@
     tools:context=".DetailWisata">
 
     <FrameLayout
+        android:visibility="gone"
         android:id="@+id/frameImage"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
@@ -38,6 +39,7 @@
     </FrameLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:visibility="gone"
         android:id="@+id/kontenWisata"
         android:layout_below="@+id/frameImage"
         android:layout_width="match_parent"
@@ -266,7 +268,7 @@
         android:layout_height="50dp"/>
 
     <TextView
-        android:id="@+id/textLoading"
+        android:id="@+id/txtLoading"
         android:layout_centerInParent="true"
         android:layout_below="@+id/progressBar"
         android:layout_marginTop="5dp"

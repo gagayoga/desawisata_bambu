@@ -1,29 +1,44 @@
 package com.example.desawisatabambu.Response;
 
 public class LoginResponse {
-
+    private int status;
+    private String message;
     private Data data;
 
+    // Getters and Setters
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public Data getData() {
         return data;
     }
 
-    public static class Data{
+    public void setData(Data data) {
+        this.data = data;
+    }
 
-
+    // Nested class for Data
+    public static class Data {
         private int id;
-
         private String email;
-
         private String name;
-
-        private Role role;
-
-        private String status;
-
+        private String role;
         private String token;
 
+        // Getters and Setters
         public int getId() {
             return id;
         }
@@ -48,21 +63,12 @@ public class LoginResponse {
             this.name = name;
         }
 
-
-        public Role getRole() {
+        public String getRole() {
             return role;
         }
 
-        public void setRole(Role role) {
+        public void setRole(String role) {
             this.role = role;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
         }
 
         public String getToken() {
@@ -71,33 +77,6 @@ public class LoginResponse {
 
         public void setToken(String token) {
             this.token = token;
-        }
-
-
-    }
-
-    public void setData(Data data) {
-        this.data = data;
-    }
-
-    public class Role{
-        private int id;
-        private String name_role;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName_role() {
-            return name_role;
-        }
-
-        public void setName_role(String name_role) {
-            this.name_role = name_role;
         }
     }
 }

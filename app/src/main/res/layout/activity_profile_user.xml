@@ -10,14 +10,14 @@
         android:id="@+id/appBarProfile"
         android:layout_width="match_parent"
         android:background="@color/primary"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
         android:paddingVertical="10dp"
         android:paddingHorizontal="15dp">
         <ImageView
             android:id="@+id/iconBack"
             android:layout_alignParentStart="true"
             android:src="@drawable/frame_2"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
             android:layout_width="wrap_content"
             android:layout_height="55dp"/>
 
@@ -27,12 +27,15 @@
             android:fontFamily="@font/poppins_semibold"
             android:layout_toEndOf="@+id/iconBack"
             android:textColor="@color/white"
+            android:textSize="14sp"
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="55dp"/>
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/kontenProfile"
+        android:visibility="gone"
         android:layout_below="@id/appBarProfile"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
@@ -115,7 +118,7 @@
         android:layout_height="50dp"/>
 
     <TextView
-        android:id="@+id/textLoading"
+        android:id="@+id/txtLoading"
         android:layout_centerInParent="true"
         android:layout_below="@+id/progressBar"
         android:layout_marginTop="5dp"

@@ -12,9 +12,13 @@ import android.widget.Toast;
 import com.example.desawisatabambu.Koneksi.ApiClient;
 import com.example.desawisatabambu.R;
 import com.example.desawisatabambu.Request.RegisterRequest;
+import com.example.desawisatabambu.Response.RegisterResponsError;
 import com.example.desawisatabambu.Response.RegisterResponse;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
+
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -83,7 +87,7 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    private void postRegister(){
+    private void postRegister() {
         emailInput = edtEmail.getText().toString().trim();
         passwordInput = edtPassword.getText().toString().trim();
         usernameInput = edtUsername.getText().toString().trim();
@@ -117,8 +121,26 @@ public class Register extends AppCompatActivity {
                     }
                 } else {
                     // Respons tidak sukses (status tidak 2xx)
-                    // Handle error jika diperlukan
-                    Toast.makeText(getApplicationContext(), "Registrasi gagal", Toast.LENGTH_SHORT).show();
+                    try {
+                        // Parse error body
+                        String errorBody = response.errorBody().string();
+                        Gson gson = new Gson();
+                        RegisterResponsError errorResponse = gson.fromJson(errorBody, RegisterResponsError.class);
+                        if (errorResponse != null && errorResponse.getMessage() != null) {
+                            StringBuilder errorMessage = new StringBuilder();
+                            for (Map.Entry<String, String[]> entry : errorResponse.getMessage().entrySet()) {
+                                for (String msg : entry.getValue()) {
+                                    errorMessage.append(msg).append("\n");
+                                }
+                            }
+                            Toast.makeText(getApplicationContext(), errorMessage.toString(), Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Registrasi gagal", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Error parsing error response", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 

@@ -7,6 +7,7 @@ import com.example.desawisatabambu.Response.RegisterResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
@@ -19,4 +20,7 @@ public interface UserServices {
 
     @POST("registrasi")
     Call<RegisterResponse> postRegister(@Body RegisterRequest registerRequest);
+
+    @POST("logout")
+    Call<Void> userLogout(@Header("Authorization") String token);
 }

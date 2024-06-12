@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -14,16 +18,23 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.desawisatabambu.Adapter.PaketWisataAdapter;
 import com.example.desawisatabambu.Adapter.RekomendasiAdapter;
 import com.example.desawisatabambu.Interface.ProductItemClickListener;
+import com.example.desawisatabambu.Koneksi.ApiClient;
+import com.example.desawisatabambu.Koneksi.UserServices;
 import com.example.desawisatabambu.Model.Product;
 import com.example.desawisatabambu.Request.LogoutTask;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     MaterialButton buttonLoghin;
@@ -34,27 +45,36 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout appBar;
     private LinearLayout kontenMain;
     private ProgressBar progressBar;
+    private String userToken, idUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // get data user
+        // Get Username
+        sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        String usernameUserr = sharedPreferences.getString("nama_user", "");
+        idUser = sharedPreferences.getString("id_user", "");
+        int UserID = Integer.parseInt(idUser);
+        userToken = getUserToken();
+
         appBar = findViewById(R.id.appBar);
         kontenMain = findViewById(R.id.kontenMain);
         progressBar = findViewById(R.id.progressBar);
         txtLoading = findViewById(R.id.txtLoading);
 
+        startLoadingTextAnimation();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                appBar.setVisibility(View.GONE);
-                kontenMain.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
-                txtLoading.setVisibility(View.VISIBLE);
-                startLoadingTextAnimation();
+                appBar.setVisibility(View.VISIBLE);
+                kontenMain.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                txtLoading.setVisibility(View.GONE);
             }
-        }, 1500);
+        }, 4000);
 
         // Rekomendasi Slider
         RecyclerView listViewProducts = findViewById(R.id.recyclerview);
@@ -120,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new LogoutTask(MainActivity.this).execute();
+                logoutUser();
             }
         });
 
@@ -132,6 +152,53 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void logoutUser() {
+        String token = "Bearer " + userToken;
+
+        UserServices userServices = ApiClient.getUserServices();
+        Call<Void> call = userServices.userLogout("Bearer " + token);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    // Clear user data from SharedPreferences
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear();
+                    editor.apply();
+
+                    String message = "Logout berhasil, silakan login kembali";
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Pemberitahuan")
+                            .setMessage(message)
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Redirect to login activity
+                                    Intent intentLogout = new Intent(MainActivity.this, Onboarding.class);
+                                    startActivity(intentLogout);
+                                    finish();
+                                }
+                            })
+                            .setIcon(R.drawable.icon_success)
+                            .show();
+
+                } else {
+                    Toast.makeText(MainActivity.this, "Failed to logout: " + response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // get token user
+    private String getUserToken() {
+        return sharedPreferences.getString("user_token", "");
     }
 
     // Setting textLoading

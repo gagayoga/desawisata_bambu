@@ -65,21 +65,20 @@ public class Login extends AppCompatActivity {
     }
 
     // fungsi untuk login menggunakan fungsi POST
-    public void isLogin(){
-        String emailInput, passwordInput;
-        emailInput = edtEmail.getText().toString().trim();
-        passwordInput = edtPassword.getText().toString().trim();
+    public void isLogin() {
+        String emailInput = edtEmail.getText().toString().trim();
+        String passwordInput = edtPassword.getText().toString().trim();
 
-        LoginRequest loginrequest = new LoginRequest();
-        loginrequest.setEmail(emailInput);
-        loginrequest.setPassword(passwordInput);
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail(emailInput);
+        loginRequest.setPassword(passwordInput);
 
-        retrofit2.Call<LoginResponse> loginResponseCall = ApiClient.getUserServices().userLogin(loginrequest);
+        Call<LoginResponse> loginResponseCall = ApiClient.getUserServices().userLogin(loginRequest);
 
         loginResponseCall.enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(retrofit2.Call<LoginResponse> call, Response<LoginResponse> response) {
-                if(response.isSuccessful() && response.body() != null){
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
 
                     String username = loginResponse.getData().getName();
@@ -89,16 +88,15 @@ public class Login extends AppCompatActivity {
                     // Menyimpan token ke SharedPreferences
                     saveUserToken(token, idUser);
 
-                    Toast.makeText(Login.this, "Login Succesfully, Selamat Datang Kembali " + username, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Login Successfully, Selamat Datang Kembali " + username, Toast.LENGTH_SHORT).show();
                     Intent intentHome = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intentHome);
                     finish();
-                }else{
+                } else {
+                    // Tangani respons gagal dengan mengonversi errorBody ke LoginResponseErrors
                     Gson gson = new Gson();
                     try {
-                        // Kode untuk mengonversi response errorBody() ke objek LoginResponseErrors
                         LoginResponseErrors errorsResponse = gson.fromJson(response.errorBody().charStream(), LoginResponseErrors.class);
-
                         String errorMessage = errorsResponse.getMessage(); // Ambil pesan kesalahan dari respons
 
                         // Tampilkan pesan kesalahan ke pengguna menggunakan Toast
@@ -106,22 +104,22 @@ public class Login extends AppCompatActivity {
 
                         // Fokuskan kembali ke field email jika diperlukan
                         if (errorMessage != null && errorMessage.contains("Email")) {
-                            edtEmail.requestFocus(); // Fokuskan kembali ke field email jika pesan berisi "Email"
+                            edtEmail.requestFocus();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        // Tangani kesalahan saat membaca errorBody()
-                        Toast.makeText(Login.this, "Error occurred", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, "Error occurred while reading the error response", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(Login.this, "Login failed, please cek koneksi internet Anda.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Login.this, "Login failed, please check your internet connection.", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     private void ValidateInput(){
         String emailInput, passwordInput;
