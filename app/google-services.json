@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "362622658909",
+    "project_id": "my-desawisata",
+    "storage_bucket": "my-desawisata.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362622658909:android:e7e7cec738680af6e6e0b4",
+        "android_client_info": {
+          "package_name": "com.example.desawisatabambu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9Zl9RM5Tsmre8Y9H2voxuJnFo4f5kuYk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

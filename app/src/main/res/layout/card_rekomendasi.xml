@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginEnd="10dp"
+    android:layout_marginStart="4dp"
+    android:id="@+id/cardRekomendasi"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="15dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="3dp"
+    android:elevation="2dp"
+    android:layout_height="wrap_content">
+
+    <!-- card_item_layout.xml -->
+    <FrameLayout
+        android:layout_width="250dp"
+        android:layout_height="250dp">
+
+        <ImageView
+            android:id="@+id/imageCard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:contentDescription="TODO" />
+
+        <TextView
+            android:backgroundTint="@color/background_card"
+            android:id="@+id/labelCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:textAlignment="center"
+            android:paddingVertical="10dp"
+            android:background="@color/white"
+            android:text="Pak Supri Homestay"
+            android:fontFamily="@font/poppins_extrabold"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            tools:ignore="RtlCompat" />
+    </FrameLayout>
+</androidx.cardview.widget.CardView>

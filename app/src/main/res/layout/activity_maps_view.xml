@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapsView">
+
+    <RelativeLayout
+        android:id="@+id/appBarMaps"
+        android:layout_alignParentTop="true"
+        android:background="@color/primary"
+        android:paddingHorizontal="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <ImageView
+            android:paddingVertical="10dp"
+            android:id="@+id/iconBack"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/frame_2"
+            android:layout_marginEnd="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:layout_toEndOf="@+id/iconBack"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:text="Maps Desa Wisata Bambu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
+
+    <WebView
+        android:layout_below="@+id/appBarMaps"
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+
+</RelativeLayout>
